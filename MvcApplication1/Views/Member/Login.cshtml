@@ -1,0 +1,51 @@
+﻿@model MvcApplication1.Models.MemberLoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>MemberLoginViewModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.email)
+        </div>
+        <div class="editor-field">
+           @Html.TextBoxFor(model => model.email, new { data_val_email="請輸入email地址"})
+            @Html.ValidationMessageFor(model => model.email)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.password)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.password)
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+
+        <p>
+            <input type="submit" value="登入" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("回首頁", "Index","Home")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @if (TempData["LastTempMessage"] != null) 
+    {
+       <script>
+           alert(' @HttpUtility.JavaScriptStringEncode(Convert.ToString(TempData["LastTempMessage"]))');
+       </script>
+    }
+}
