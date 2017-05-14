@@ -11,7 +11,7 @@
     <header>
         <nav>
             @Html.ActionLink("首頁","Index","Home") |
-            @Html.ActionLink("購物車","Logout","Cart")
+            @Html.ActionLink("購物車", "Index", "Cart")
             @if (User.Identity.IsAuthenticated) 
             {
               @:| @Html.ActionLink("登出","Logout","Member")

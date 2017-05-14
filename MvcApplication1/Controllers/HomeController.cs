@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcApplication1.Models;
+using PagedList;
 namespace MvcApplication1.Controllers
 {
     public class HomeController : BaseController
@@ -34,7 +35,7 @@ namespace MvcApplication1.Controllers
             return View(data);
         }
 
-        public ActionResult ProdcutList(int id) 
+        public ActionResult ProductList(int id,int p =1) 
         {
             //var productCategory = new ProductCategory() { Id = id, Name = "類別" + id };
             //var data = new List<Product>()
@@ -45,13 +46,22 @@ namespace MvcApplication1.Controllers
             //};
             var productCategory = db.ProductCategories.Find(id);
             var data = productCategory.Products.ToList();
-
-            if (data.Count == 0) 
+            if (productCategory != null)
             {
-                 productCategory.Products.Add(new Product(){ Name=productCategory.Name +"類別商品1",Color = Color.Red,Description = "N/A",Price=99,PublishOn=DateTime.Now,ProductCategory = productCategory});
-                 productCategory.Products.Add(new Product() { Name = productCategory.Name + "類別商品2", Color = Color.Blue, Description = "N/A", Price = 150, PublishOn = DateTime.Now, ProductCategory = productCategory });
+                if (data.Count == 0)
+                {
+                    productCategory.Products.Add(new Product() { Name = productCategory.Name + "類別商品1", Color = Color.Red, Description = "N/A", Price = 99, PublishOn = DateTime.Now, ProductCategory = productCategory });
+                    productCategory.Products.Add(new Product() { Name = productCategory.Name + "類別商品2", Color = Color.Blue, Description = "N/A", Price = 150, PublishOn = DateTime.Now, ProductCategory = productCategory });
+                    db.SaveChanges();
+                }
+                var pageData = data.ToPagedList(pageNumber: p, pageSize: 10);
+                return View(pageData);
             }
-            return View(data);
+            else {
+
+                return HttpNotFound();
+            }
+         
         }
 
         public ActionResult ProductDetail(int id) 
