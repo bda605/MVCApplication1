@@ -146,7 +146,7 @@ namespace MvcApplication1.Controllers
             Session.Clear();
             return RedirectToAction("Index", "Home");
         }
-	}
+    }
 }
 
  
